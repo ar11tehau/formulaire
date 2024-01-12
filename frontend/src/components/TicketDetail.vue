@@ -1,6 +1,7 @@
 <script setup>
   import { ref, onMounted, watch } from 'vue'
   import { CATEGORIES, PRIORITIES } from '../constants'
+  import { asyncTickets } from "../use/useTickets.mjs" 
 
   const props = defineProps({
       ticketId: {
@@ -11,18 +12,13 @@
 
   const ticket = ref({})
 
+   watch(
+      () => props.ticketId, 
+      async () => ticket.value = await asyncTickets(props.ticketId),
+      { immediate: true }
+   )
 
-  onMounted(async () => {
-      const response = await fetch(`/api/ticket/${props.ticketId}`)
-      ticket.value = await response.json()
-  })
-
-  watch(() => props.ticketId, async () => {
-    const response = await fetch(`/api/ticket/${props.ticketId}`)
-    ticket.value = await response.json()
-  })
-
- </script>
+</script>
 
 <template>
     <div class="max-w-md mx-auto mt-8">

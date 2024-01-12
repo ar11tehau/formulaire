@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
 import MyForm from "/src/views/MyForm.vue"
 import Recap from "/src/views/Recap.vue"
 import TicketDetail from "/src/components/TicketDetail.vue"
