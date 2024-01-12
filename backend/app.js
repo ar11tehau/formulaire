@@ -21,21 +21,30 @@ app.use(express.static("public"))
 
 app.get('/api/ticket', async (req, res) => {
     const tickets = await prisma.ticket.findMany()
-    // res.render("response", {title: "Answer", db_food_id, nutdata, nutrient});
     res.send(tickets)
  });
  
 app.post("/api/ticket", async function(req, res) {
     const body = req.body
-    console.log(body)
-    await prisma.ticket.create({
+    const ticket = await prisma.ticket.create({
         data: {
             email: body.email,
             category: body.category,
             description: body.description,
             priority: body.priority,
         },
-      })
+    })
+    res.send(ticket)
+})
+
+app.get("/api/ticket/:id", async function(req, res) {
+    const id = parseInt(req.params.id)
+    const ticket = await prisma.ticket.findUnique({
+        where: {
+           id,
+        },
+    })
+    res.send(ticket)
 })
 
 app.listen(PORT, () => console.log(`App listening at http://localhost:${PORT}`))
