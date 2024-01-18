@@ -17,7 +17,7 @@
 <template>
     <div class="max-w-4xl mx-auto mt-8 flex justify-between">
       <div>
-         <template v-for="ticket in allTickets" class="p-4">
+         <template v-for="ticket in allTickets.reverse()" class="p-4">
             <TicketCard @click="handleClick(ticket.id)" :ticketId=ticket.id :selected="ticket.id == selectedTicketId"></TicketCard>
          </template>
       </div>

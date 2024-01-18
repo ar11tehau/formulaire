@@ -1,7 +1,7 @@
 <script setup>
    import { ref, onMounted, computed } from 'vue'
    import { CATEGORIES, PRIORITIES } from '../constants'
-   import { asyncTickets } from "../use/useTickets.mjs"  
+   import { OneTicket } from "../use/useTickets.mjs"  
 
    const props = defineProps({
       ticketId: {
@@ -16,9 +16,8 @@
 
    const ticket = ref({})
 
-   onMounted(async () => {
-      ticket.value = await asyncTickets(props.ticketId)
-   })
+   ticket.value = OneTicket(props.ticketId)
+
 </script>
 
 <template>

@@ -1,8 +1,10 @@
-import { ref, computed } from 'vue'
+import { useSessionStorage } from '@vueuse/core'
+import { computed } from 'vue'
 
-const id2ticket = ref({})
 
-const ticketsloaded = ref(false)
+const id2ticket = useSessionStorage('id2ticket', {})
+const ticketsloaded = useSessionStorage('ticket-list-complete', false)
+
 
 export const allTickets = computed(() => {
    if (ticketsloaded.value) { return Object.values(id2ticket.value)}
@@ -12,37 +14,15 @@ export const allTickets = computed(() => {
       .then((data) => {
          data.forEach(ticket => {
             id2ticket.value[ticket.id] = ticket
-            console.log(id2ticket.value[ticket.id])
          });
          ticketsloaded.value = true
       })
    return [] 
 })
 
-export async function getAllTicket() {
-   const ticketList = ref([])
-   const url = `/api/ticket`
-   const response = await fetch(url)
-   ticketList.value = await response.json()
-   
-   ticketList.value.forEach(ticket => {
-      id2ticket[ticket.id] = ticket
-   });
-   return ticketList.value
-}
 
-export async function asyncTickets(ticketId)
-{
-   const ticket = ref({})
+export const OneTicket = (ticketId) => {
    if (ticketId in id2ticket.value) {
-      console.log("no updates")
       return id2ticket.value[ticketId]
-   }
-   else {
-      const url = `/api/ticket/${ticketId}`
-      const response = await fetch(url)
-      ticket.value = await response.json()
-      id2ticket.value[ticketId] = ticket.value
-      return ticket.value
    }
 }
