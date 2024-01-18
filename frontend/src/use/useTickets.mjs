@@ -26,3 +26,17 @@ export const OneTicket = (ticketId) => {
       return id2ticket.value[ticketId]
    }
 }
+
+export const ticketOfId = computed(() => (id) => {
+   const ticket = id2ticket.value[id]
+   if (ticket) return ticket
+   fetch(`/api/ticket/${id}`).then(response => response.json()).then(ticket => {
+      id2ticket.value[ticket.id] = ticket
+   })
+})
+
+export const visibleTickets = computed(() => (filteredPriorities, filteredCategories) => 
+   allTickets.value
+   .filter(ticket => filteredPriorities.has(ticket.priority))
+   .filter(ticket => filteredCategories.has(ticket.category))
+)

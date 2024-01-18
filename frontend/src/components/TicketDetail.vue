@@ -1,7 +1,7 @@
 <script setup>
-   import { ref, onMounted, watch } from 'vue'
+   import { computed, ref, onMounted, watch } from 'vue'
    import { CATEGORIES, PRIORITIES } from '../constants'
-   import { OneTicket } from "../use/useTickets.mjs" 
+   import { ticketOfId } from "../use/useTickets.mjs" 
 
    const props = defineProps({
       ticketId: {
@@ -10,13 +10,7 @@
       },
    })
 
-   const ticket = ref({})
-
-      watch(
-         props, 
-         () => { ticket.value =  OneTicket(props.ticketId) },
-         { immediate: true }
-      )
+   const ticket = computed(() => ticketOfId.value(props.ticketId))
 
 </script>
 
