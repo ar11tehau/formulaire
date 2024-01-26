@@ -1,9 +1,10 @@
 <script setup>
    import { computed, ref } from 'vue'
+   import { useRoute } from 'vue-router'
+
    import TicketCard from "/src/components/TicketCard.vue"
    import router from "../router"
-   import { useRoute } from 'vue-router'
-   import { visibleTickets } from "../use/useTickets.mjs"
+   import { logout, visibleTickets } from "../use/useTickets.mjs"
 
    const route = useRoute()
    const selectedTicketId = ref(route.params.ticketId)
@@ -34,9 +35,15 @@
    }
 
    const sortedTickets = computed(() => visibleTickets.value(filteredPriorities.value, filteredCategories.value))
+
+   const newform = () => router.push("/form")
+
+   
 </script>
 
 <template>
+   <button @click="logout" class="flex w-fit bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-blue-200 absolute right-0 m-4">Log Out</button>
+   <button @click="newform" class="flex w-fit bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-blue-200 absolute top-14 right-0 m-4">New Form</button>
    <div class="flex mb-3">
          <span class="mr-2 font-bold">Priorités :</span>
          <ul class="flex space-x-1">
@@ -53,7 +60,7 @@
    </div>
     <div class="max-w-4xl mx-auto mt-8 flex justify-between">
       <div>
-         <template v-for="ticket in sortedTickets" class="p-4">
+         <template v-for="ticket in sortedTickets.reverse()" class="p-4">
             <TicketCard @click="handleClick(ticket.id)" :ticketId=ticket.id :selected="ticket.id == selectedTicketId"></TicketCard>
          </template>
       </div>

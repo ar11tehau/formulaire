@@ -1,6 +1,8 @@
 <script setup>
   import { ref, onMounted } from 'vue'
   import { CATEGORIES, PRIORITIES } from '../constants'
+  import router from '../router';
+
   
   const props = defineProps({
       ticketId: {
@@ -11,6 +13,8 @@
 
   const ticket = ref({})
 
+  const all = () => router.push("/tickets")
+  const form = () => router.push("/form")
 
   onMounted(async () => {
       const response = await fetch(`/api/ticket/${props.ticketId}`)
@@ -34,6 +38,8 @@
 
       <label class="block mt-4 text-sm font-medium text-gray-700">Priorité : <span class="mt-1 p-2 w-full">{{ PRIORITIES[ticket.priority] }}</span></label>
 
-      <a href="/" class="block mt-4 text-blue-500 hover:underline">Saisir une autre demande</a>
+      <button @click="form" class="flex w-fit bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-blue-200 mb-4" type="submit">Saisir une autre demande</button>
+      <button @click="all" class="flex w-fit bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-blue-200 mr-4" type="submit">Tous les tickets</button>
+
   </div>
 </template>
