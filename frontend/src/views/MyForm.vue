@@ -2,8 +2,7 @@
    import { ref } from 'vue'
    import { computed } from "vue"
    import router from '../router';
-   
-   const email = sessionStorage.getItem("email")
+   import { createTicket } from "../use/useTickets.mjs"
    
    const props = defineProps({
       formData: {
@@ -11,8 +10,10 @@
       }
    })
 
+   const email = sessionStorage.getItem("email")
+   
    const formData = ref ({
-      email,
+      email: email,
       category: "",
       description: "",
       priority: "",
@@ -28,26 +29,6 @@
       return !(isDescriptionValid.value && isCategoryValid.value && isPriorityValid.value)
    })
 
-   async function submitForm() {
-      const url = "/api/ticket"
-      const response = await fetch(url, {
-         method: "POST", // *GET, POST, PUT, DELETE, etc.
-         mode: "cors", // no-cors, *cors, same-origin
-         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-         credentials: "same-origin", // include, *same-origin, omit
-         headers: {
-         "Content-Type": "application/json",
-         // 'Content-Type': 'application/x-www-form-urlencoded',
-         },
-         redirect: "follow", // manual, *follow, error
-         referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-         body: JSON.stringify(formData.value), // le type utilisé pour le corps doit correspondre à l'en-tête "Content-Type"
-      });
-      const createdTicket = await response.json()
-      //console.log(createdTicket)
-
-      router.push({ path:"recap/" + createdTicket.id }) 
-   }
    
    const cancel = () => router.push("tickets")
 </script>
@@ -82,7 +63,7 @@
       </div>
       <div class="flex justify-end">
          <button @click="cancel" class="flex w-fit bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-blue-200 mr-4" type="submit">Annuler</button>
-         <button @click="submitForm" :disabled="isFormValid" class="flex w-fit bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-blue-200" type="submit">Valider</button>
+         <button @click="createTicket(formData)" :disabled="isFormValid" class="flex w-fit bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-blue-200" type="submit">Valider</button>
       </div>
    </div>
 </template>

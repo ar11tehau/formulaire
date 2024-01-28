@@ -13,8 +13,8 @@
          default: false,
       }
    })
-
    const ticket = computed(() => ticketOfId.value(props.ticketId))
+
 
 </script>
 

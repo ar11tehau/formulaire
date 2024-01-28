@@ -1,10 +1,9 @@
 <script setup>
    import { computed, ref } from 'vue'
    import { useRoute } from 'vue-router'
-
    import TicketCard from "/src/components/TicketCard.vue"
    import router from "../router"
-   import { logout, visibleTickets } from "../use/useTickets.mjs"
+   import { sortTickets, logout } from "../use/useTickets.mjs"
 
    const route = useRoute()
    const selectedTicketId = ref(route.params.ticketId)
@@ -34,7 +33,7 @@
       router.push(`/tickets`)
    }
 
-   const sortedTickets = computed(() => visibleTickets.value(filteredPriorities.value, filteredCategories.value))
+   const sortedTickets = computed(() => sortTickets.value(filteredPriorities.value, filteredCategories.value))
 
    const newform = () => router.push("/form")
 

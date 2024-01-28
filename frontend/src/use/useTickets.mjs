@@ -1,80 +1,119 @@
-import { useSessionStorage } from '@vueuse/core'
-import { computed, ref } from 'vue'
-import VueCookies from 'vue-cookies'
-import router from "../router"
+// Importing necessary modules
+import { useSessionStorage } from '@vueuse/core';
+import { computed, ref } from 'vue';
+import VueCookies from 'vue-cookies';
+import router from "../router";
 
-useSessionStorage("email", "")
+// Reference variables for storing ticket data
+const id2ticket = ref({});
+const ticketsloaded = ref(false);
 
+// Initializing session storage for email and all tickets
+useSessionStorage("email", "");
+useSessionStorage("alltickets", id2ticket);
 
-const id2ticket = ref({})
-const ticketsloaded = ref(false)
+// User Authentication Functions
+//--------------------------------
 
+// Function to handle user login
 export async function login(formData) {
-   const url = "/api/auth"
+   const url = "/api/auth";
    const response = await fetch(url, {
-       method: "POST", // *GET, POST, PUT, DELETE, etc.
-       mode: "cors", // no-cors, *cors, same-origin
-       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-       credentials: "same-origin", // include, *same-origin, omit
+       method: "POST",
        headers: {
        "Content-Type": "application/json",
-       // 'Content-Type': 'application/x-www-form-urlencoded',
        },
-       redirect: "follow", // manual, *follow, error
-       referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-       body: JSON.stringify(formData), // le type utilisé pour le corps doit correspondre à l'en-tête "Content-Type"
+       body: JSON.stringify(formData),
    });
 
    if (response.ok) {
-
-      sessionStorage.setItem("email", formData.email)
-      router.push("/tickets")
-      id2ticket.value = {}
-      ticketsloaded.value = false
+      // If login successful, retrieve tickets and store email in session storage
+      getTickets();
+      sessionStorage.setItem("email", formData.email);
    } else {
-      console.log("not ok")
+      console.log("Login unsuccessful");
    }
-}  
+}
 
-export const allTickets = computed(() => {
-   if (ticketsloaded.value) { return Object.values(id2ticket.value) }
-   const url = `/api/ticket`
-   fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-         data.forEach(ticket => {
-            id2ticket.value[ticket.id] = ticket
-         });
-         ticketsloaded.value = true
-      })
-   return [] 
-   
-})
+// Function to handle user logout
+export const logout = () => {
+   // Redirect to sign-in page and clear session storage and cookies
+   router.push(`/signin`);
+   sessionStorage.setItem("email", "");
+   sessionStorage.setItem("alltickets", "[]");
+   ticketsloaded.value = false;
+   VueCookies.keys().forEach(cookie => VueCookies.remove(cookie));
+}
 
+// Ticket Management Functions
+//----------------------------
+
+// Function to retrieve tickets
+export async function getTickets() {
+   const url = '/api/ticket';
+   const response = await fetch(url, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+   });
+   if (response.ok) {
+      // If successful, parse ticket data and update loaded status
+      const data = await response.json();
+      id2ticket.value = {};
+      data.forEach(ticket => {
+         id2ticket.value[ticket.id] = ticket;
+      });
+      ticketsloaded.value = true;
+      router.push("/tickets");
+   } else {
+      console.log("Failed to fetch tickets");
+   }
+}
+
+// Function to create a new ticket
+export async function createTicket(formData) {
+   const url = "/api/ticket";
+   const response = await fetch(url, {
+      method: "POST",
+      headers: {
+      "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+   });
+
+   if (response.ok) {
+      // If successful, add created ticket to the list and redirect to ticket recap
+      const createdTicket = await response.json();
+      id2ticket.value[createdTicket.id] = createdTicket;
+      router.push({ path:"recap/" + createdTicket.id });
+   } else {
+      console.log("Failed to create ticket");
+   } 
+}
+
+// Ticket Retrieval Functions
+//---------------------------
+
+// Function to retrieve a single ticket by ID
 export const OneTicket = (ticketId) => {
    if (ticketId in id2ticket.value) {
-      return id2ticket.value[ticketId]
+      return id2ticket.value[ticketId];
    }
 }
 
+// Computed property to retrieve a ticket based on its ID
 export const ticketOfId = computed(() => (id) => {
-   const ticket = id2ticket.value[id]
-   if (ticket) return ticket
+   const ticket = id2ticket.value[id];
+   if (ticket) return ticket;
+   // If ticket not found locally, fetch it from the server
    fetch(`/api/ticket/${id}`).then(response => response.json()).then(ticket => {
-      id2ticket.value[ticket.id] = ticket
-   })
-})
+      id2ticket.value[ticket.id] = ticket;
+   });
+});
 
-export const visibleTickets = computed(() => (filteredPriorities, filteredCategories) => {
-   return allTickets.value
-   .filter(ticket => filteredPriorities.has(ticket.priority))
-   .filter(ticket => filteredCategories.has(ticket.category))
-})
+// Computed property to retrieve the list of all tickets
+const ticketsList = computed(() => Object.values(id2ticket.value));
 
-
-
-export const logout = () => {
-   router.push(`/signin`)
-   sessionStorage.clear()
-   VueCookies.keys().forEach(cookie => VueCookies.remove(cookie)) 
-}
+// Computed property to filter and sort tickets based on priorities and categories
+export const sortTickets = computed(() => (filteredPriorities, filteredCategories) => ticketsList.value
+         .filter(ticket => filteredPriorities.has(ticket.priority))
+         .filter(ticket => filteredCategories.has(ticket.category)));
