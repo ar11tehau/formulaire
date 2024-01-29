@@ -1,1 +1,37 @@
-c
+services:
+  postgresql:
+    image: postgres:14
+    env_file: postgresql.env
+    hostname: postgres
+    ports:
+      - "5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - postgresql-net
+
+  nodejs:
+    build:
+      context: .
+    ports:
+      - "3800"
+    networks:
+      - nginx-net
+      - postgresql-net
+  
+  nginx:
+    image: nginx:latest
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx-conf:/etc/nginx/conf.d/
+      - ./frontend/dist:/var/www/
+    networks:
+      - nginx-net
+
+volumes:
+  postgres_data:
+
+networks:
+  nginx-net:
+  postgresql-net:
