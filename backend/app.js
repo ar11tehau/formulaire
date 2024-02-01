@@ -10,7 +10,7 @@ import bearerToken from 'express-bearer-token';
 const secret = "ihdeqhoigbpouztjg";
 
 // Port for the server
-const PORT = 3800;
+const PORT = process.env.PORT;
 
 // Initializing express app
 const app = express();
