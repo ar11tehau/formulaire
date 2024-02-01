@@ -2,8 +2,6 @@
    import { computed, ref } from 'vue'
    import { login } from "../use/useTickets.mjs"
 
-
-
    const props = defineProps({
       formData: {
          type: Object,

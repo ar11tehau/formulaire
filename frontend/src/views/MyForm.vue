@@ -19,6 +19,7 @@
       priority: "",
    })
 
+
    const isDescriptionValid = computed ( () => !!formData.value?.description )
 
    const isCategoryValid = computed ( () => !!formData.value.category )

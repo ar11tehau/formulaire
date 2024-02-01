@@ -11,7 +11,7 @@ export default defineConfig(({ command, mode }) => {
          open: true,
          proxy: {
             '^/api/.*': {
-               target: 'http://localhost:3800',
+               target: 'https://tickets.domelier.fr',
                ws: true,
                secure: false,
                changeOrigin: true,
