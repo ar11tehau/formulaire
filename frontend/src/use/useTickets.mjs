@@ -31,7 +31,7 @@ export async function login(formData) {
       getTickets();
       sessionStorage.setItem("email", formData.email);
    } else {
-      console.log("Login unsuccessful");
+      console.log("Login unsuccessful", response);
    }
 }
 

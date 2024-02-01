@@ -39,7 +39,7 @@
       <input class="border m-3 w-8/12" type="password" v-model="formData.password" placeholder="password" name="password">
    </div>
    <div class="flex justify-end">
-   <button @click="login(formData)" :disabled="isFormValid" class="flex w-fit bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-blue-200" type="submit">Valider</button>
+      <button @click="login(formData)" :disabled="isFormValid" class="flex w-fit bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-blue-200" type="submit">Valider</button>
    </div>
 </div>
 </template>

@@ -15,20 +15,13 @@
 </script>
 
 <template>
-   <div class="max-w-md mx-auto mt-8">
-      <p class="my-4 p-2 w-full text-lg">Votre demande :</p>
-
-      <label class=" mt-4 text-sm font-medium text-gray-700">Identifiant : <span class="mt-1 p-2 w-full">{{ ticket.id }}</span></label>
-      
-
-      <label class="block mt-4 text-sm font-medium text-gray-700">Email : <span class="mt-1 p-2 w-full">{{ ticket.email }}</span></label>
-
-      <label class="block mt-4 text-sm font-medium text-gray-700">Catégorie : <span class="mt-1 p-2 w-full">{{ CATEGORIES[ticket.category] }}</span></label>
-
-      <label class="block mt-4 text-sm font-medium text-gray-700">Description</label>
-      <p class="mt-1 p-2 border rounded-md w-full">{{ ticket.description }}</p>
-
-      <label class="block mt-4 text-sm font-medium text-gray-700">Priorité : <span class="mt-1 p-2 w-full">{{ PRIORITIES[ticket.priority] }}</span></label>
-
+   <div class="max-w-md border border-gray-200 mx-2 rounded-md space-y-2">
+      <p class="px-2 w-full text-lg">Votre demande :</p>
+      <p class="px-2 text-sm font-medium text-gray-700 w-full">Identifiant : {{ ticket.id }}</p>
+      <p class="px-2 text-sm font-medium text-gray-700 w-full">Email : {{ ticket.email}}</p>
+      <p class="px-2 text-sm font-medium text-gray-700 w-full">Catégorie : {{ CATEGORIES[ticket.category] }}</p>
+      <p class="px-2 text-sm font-medium text-gray-700 w-full">Description : 
+         <p class="italic border border-gray-150 rounded-md">{{ ticket.description }}</p></p>
+      <p class="px-2 text-sm font-medium text-gray-700 w-full">Priorité : {{ PRIORITIES[ticket.priority] }}</p>
    </div>
  </template>
