@@ -26,7 +26,7 @@
   "scripts": {
     "dev": "",
     "test": "",
-    "start:migrate:prod": "prisma migrate deploy && node app.js"
+    "start": "prisma migrate deploy && node app.js"
   },
   "dependencies": {
     "@prisma/client": "^5.8.0",
