@@ -26,6 +26,15 @@ services:
     volumes:
       - ./nginx-conf:/etc/nginx/conf.d/
       - ./frontend/dist:/var/www/
+      - ./certbot/www/:/var/www/certbot/:ro
+    networks:
+      - nginx-net
+  
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
     networks:
       - nginx-net
 
