@@ -1,12 +1,13 @@
 <script setup>
    import { computed, ref } from 'vue'
-   import { login } from "../use/useTickets.mjs"
+   import { checkIsAuthenticated, login } from "../use/useTickets.mjs"
 
    const props = defineProps({
       formData: {
          type: Object,
       } 
    })
+
 
    const formData = ref ({
       email: "",

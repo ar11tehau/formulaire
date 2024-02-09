@@ -3,7 +3,7 @@ import MyForm from "/src/views/MyForm.vue"
 import Recap from "/src/views/Recap.vue"
 import TicketDetail from "/src/components/TicketDetail.vue"
 import Signin from "/src/views/Signin.vue"
-import { isAuthenticated } from "/src/use/useTickets.mjs"
+import { checkIsAuthenticated } from "/src/use/useTickets.mjs"
 
 const routes = [
   {
@@ -45,14 +45,15 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from) => {
-  console.log(isAuthenticated.value)
+  const isAuthenticated = await checkIsAuthenticated()
   if (
     // make sure the user is authenticated
-    !isAuthenticated.value &&
+    !isAuthenticated &&
     // Avoid an infinite redirect
     to.name !== 'Login'
   ) {
     // redirect the user to the login page
+    
     return { name: 'Login' }
   }
 })

@@ -68,6 +68,25 @@ app.post("/api/auth", async (req, res) => {
    }
 });
 
+
+app.get('/api/auth', async (req, res) => {
+   try {
+      const token = req.cookies?.access_token;
+      if (token) {
+         const payload = jwt.verify(token, secret);
+         res.sendStatus(200)
+      }
+      else {
+         console.log("Invalid signature");
+         res.sendStatus(403)
+      }
+      
+   } catch(err) {
+      console.log("Invalid signature", err);
+      res.sendStatus(403)
+   }
+});
+
 // Endpoint for retrieving tickets
 app.get('/api/ticket', async (req, res) => {
    const token = req.cookies.access_token;

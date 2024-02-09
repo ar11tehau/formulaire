@@ -17,6 +17,24 @@ useSessionStorage("alltickets", id2ticket);
 // User Authentication Functions
 //--------------------------------
 
+
+// Function to check authentification
+
+export const checkIsAuthenticated = async () => {
+   const url = "/api/auth";
+   const response = await fetch(url, {
+       method: "GET",
+       headers: {
+       "Content-Type": "application/json",
+       },
+   });
+   if (response.ok) {
+      return true
+   } else {
+      return false
+   }
+}
+
 // Function to handle user login
 export async function login(formData) {
    const url = "/api/auth";
@@ -32,7 +50,6 @@ export async function login(formData) {
       // If login successful, retrieve tickets and store email in session storage
       getTickets();
       sessionStorage.setItem("email", formData.email);
-      isAuthenticated.value = true
    } else {
       console.log("Login unsuccessful", response);
    }
@@ -42,7 +59,6 @@ export async function login(formData) {
 export const logout = () => {
    // Redirect to sign-in page and clear session storage and cookies
    router.push(`/signin`);
-   isAuthenticated.value = false
    sessionStorage.setItem("email", "");
    sessionStorage.setItem("alltickets", "[]");
    ticketsloaded.value = false;
