@@ -11,6 +11,7 @@ services:
       - postgresql-net
 
   nodejs:
+    image: node:latest
     build:
       context: .
     ports:
@@ -26,7 +27,6 @@ services:
     volumes:
       - ./nginx-conf:/etc/nginx/conf.d/
       - ./frontend/dist:/var/www/
-      - ./certbot/www/:/var/www/certbot/
     networks:
       - nginx-net
   
