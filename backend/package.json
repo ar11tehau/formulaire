@@ -26,7 +26,7 @@
   "scripts": {
     "dev": "",
     "test": "",
-    "start": "npx prisma db push && node app.js"
+    "start": "npx prisma db push && pm2 start ecosystem.config.cjs"
   },
   "dependencies": {
     "@prisma/client": "^5.8.0",
@@ -37,6 +37,7 @@
     "express": "^4.18.2",
     "express-bearer-token": "^2.4.0",
     "jsonwebtoken": "^9.0.2",
+    "pm2": "^5.3.1",
     "prisma": "^5.8.1",
     "vue-router": "^4.2.5"
   }
