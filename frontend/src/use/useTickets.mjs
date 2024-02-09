@@ -4,6 +4,8 @@ import { computed, ref } from 'vue';
 import VueCookies from 'vue-cookies';
 import router from "../router";
 
+export const isAuthenticated = ref(false)
+
 // Reference variables for storing ticket data
 const id2ticket = ref({});
 const ticketsloaded = ref(false);
@@ -30,6 +32,7 @@ export async function login(formData) {
       // If login successful, retrieve tickets and store email in session storage
       getTickets();
       sessionStorage.setItem("email", formData.email);
+      isAuthenticated.value = true
    } else {
       console.log("Login unsuccessful", response);
    }
@@ -39,6 +42,7 @@ export async function login(formData) {
 export const logout = () => {
    // Redirect to sign-in page and clear session storage and cookies
    router.push(`/signin`);
+   isAuthenticated.value = false
    sessionStorage.setItem("email", "");
    sessionStorage.setItem("alltickets", "[]");
    ticketsloaded.value = false;
