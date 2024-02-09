@@ -22,19 +22,19 @@ services:
   nginx:
     image: nginx:latest
     ports:
-      - 80:80
+      - 8080:80
     volumes:
       - ./nginx-conf:/etc/nginx/conf.d/
       - ./frontend/dist:/var/www/
-      - ./certbot/www/:/var/www/certbot/:ro
+      - ./certbot/www/:/var/www/certbot/
     networks:
       - nginx-net
   
   certbot:
     image: certbot/certbot:latest
     volumes:
-      - ./certbot/www/:/var/www/certbot/:rw
-      - ./certbot/conf/:/etc/letsencrypt/:rw
+      - ./certbot/www/:/var/www/certbot/
+      - ./certbot/conf/:/etc/letsencrypt/
     networks:
       - nginx-net
 
