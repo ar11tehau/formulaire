@@ -26,7 +26,7 @@
   "scripts": {
     "dev": "",
     "test": "",
-    "start": "npx prisma db push && pm2 start ecosystem.config.cjs"
+    "start": "npx prisma db push && node app.js"
   },
   "dependencies": {
     "@prisma/client": "^5.8.0",
