@@ -14,7 +14,7 @@ services:
     build:
       context: .
     ports:
-      - "3800"
+      - "3800:3800"
     networks:
       - nginx-net
       - postgresql-net

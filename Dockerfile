@@ -4,7 +4,7 @@ COPY backend/ /home/node/ticket/
 
 WORKDIR /home/node/ticket
 
-#RUN npm i
+RUN npm i
 
 #CMD node app.js
 
