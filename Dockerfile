@@ -8,4 +8,4 @@ WORKDIR /home/node/ticket
 
 #CMD node app.js
 
-#CMD [ "npm", "run", "start" ]
+CMD [ "npm", "run", "start" ]
